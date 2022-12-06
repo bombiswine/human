@@ -1,5 +1,7 @@
 package org.human;
 
+import java.util.Objects;
+
 class FullName {
     private final String firstName;
     private final String middleName;
@@ -65,6 +67,27 @@ class FullName {
         }
 
         return fullName.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FullName fullName)) {
+            return false;
+        }
+
+        return getFirstName().equals(fullName.getFirstName())
+               && getMiddleName().equals(fullName.getMiddleName())
+               && getSurname().equals(fullName.getSurname());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            getFirstName(), getMiddleName(), getSurname()
+        );
     }
 
     private enum FullNameFormats {
