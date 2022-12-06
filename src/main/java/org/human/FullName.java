@@ -10,19 +10,19 @@ class FullName {
         final String middleName,
         final String surname
     ) {
-        if (firstName == null || firstName.isEmpty() ) {
+        if (firstName == null || firstName.isEmpty()) {
             throw new IllegalArgumentException(
                 "null or empty string passed into " +
                 "FullName's constructor as first name"
             );
         }
-        if (middleName == null || middleName.isEmpty() ) {
+        if (middleName == null || middleName.isEmpty()) {
             throw new IllegalArgumentException(
                 "null or empty string passed into " +
                 "FullName's constructor as middle name"
             );
         }
-        if (surname == null || surname.isEmpty() ) {
+        if (surname == null || surname.isEmpty()) {
             throw new IllegalArgumentException(
                 "null or empty string passed into " +
                 "FullName's constructor as surname"
@@ -48,7 +48,7 @@ class FullName {
 
     public String getFullName(final FullNameFormats format) {
         StringBuffer fullName = new StringBuffer();
-        switch (format){
+        switch (format) {
             case SURNAME_FIRSTNAME_MIDDLENAME:
                 fullName.append(surname).
                          append(" ").
