@@ -1,4 +1,4 @@
-package org.human_man;
+package org.human;
 
 public class Main {
     public static void main(String[] args) {
