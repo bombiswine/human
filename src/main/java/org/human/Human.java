@@ -11,21 +11,12 @@ public class Human {
     private int         weight;
 
     public Human(
-<<<<<<< HEAD
-        final FullName    fullName,
-        final SimpleDate  birthDate,
-        final HumanGender gender,
-        final String      nationality,
-        final int         height,
-        final int         weight
-=======
         final FullName   fullName,
         final SimpleDate birthDate,
         final String     gender,
         final String     nationality,
         final int        height,
         final int        weight
->>>>>>> master
     ) {
         if (fullName == null) {
             throw new IllegalArgumentException(
@@ -42,23 +33,16 @@ public class Human {
                 "The null passed into Human's constructor as human gender argument"
             );
         }
-<<<<<<< HEAD
-=======
         if (!HumanGender.contains(gender)) {
             throw new IllegalArgumentException(
                 "The null passed into Human's constructor as human gender argument"
             );
         }
->>>>>>> master
         if (nationality == null) {
             throw new IllegalArgumentException(
                 "The null passed into Human's constructor as nationality argument"
             );
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
         if (height < 0) {
             throw new IllegalArgumentException(
                 "A negative height value passed into Human's constructor"
@@ -72,11 +56,7 @@ public class Human {
 
         this.fullName    = fullName;
         this.birthDate   = birthDate;
-<<<<<<< HEAD
-        this.gender      = gender;
-=======
         this.gender      = HumanGender.valueOf(gender);
->>>>>>> master
         this.height      = height;
         this.weight      = weight;
         this.nationality = nationality;
