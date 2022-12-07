@@ -3,12 +3,12 @@ package org.human;
 import org.simple_date.SimpleDate;
 
 public class Human {
-    private FullName    fullName;
-    private SimpleDate  birthDate;
-    private HumanGender gender;
-    private String      nationality;
-    private int         height;
-    private int         weight;
+    protected FullName    fullName;
+    protected SimpleDate  birthDate;
+    protected HumanGender gender;
+    protected String      nationality;
+    protected int         height;
+    protected int         weight;
 
     public Human(
         final FullName   fullName,
@@ -56,9 +56,33 @@ public class Human {
 
         this.fullName    = fullName;
         this.birthDate   = birthDate;
-        this.gender      = HumanGender.valueOf(gender);
+        this.gender      = HumanGender.getGenderByValue(gender);
         this.height      = height;
         this.weight      = weight;
         this.nationality = nationality;
+    }
+
+    public FullName getFullName() {
+        return fullName;
+    }
+
+    public SimpleDate getBirthDate() {
+        return birthDate;
+    }
+
+    public HumanGender getGender() {
+        return gender;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWeight() {
+        return weight;
     }
 }

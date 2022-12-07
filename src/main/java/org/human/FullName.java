@@ -7,6 +7,17 @@ class FullName {
     private final String middleName;
     private final String surname;
 
+    private enum FullNameFormats {
+        SURNAME_FIRSTNAME_MIDDLENAME("SFM"),
+        FIRSTNAME_MIDDLENAME_SURNAME("FMS");
+
+        private final String fullNameFormat;
+
+        FullNameFormats(final String fullNameFormat) {
+            this.fullNameFormat = fullNameFormat;
+        }
+    }
+
     public FullName(
         final String firstName,
         final String middleName,
@@ -18,10 +29,9 @@ class FullName {
                 "FullName's constructor as first name"
             );
         }
-        if (middleName == null || middleName.isEmpty()) {
+        if (middleName == null) {
             throw new IllegalArgumentException(
-                "null or empty string passed into " +
-                "FullName's constructor as middle name"
+                "null passed into FullName's constructor as middle name"
             );
         }
         if (surname == null || surname.isEmpty()) {
@@ -57,13 +67,14 @@ class FullName {
                          append(middleName).
                          append(" ").
                          append(firstName);
-
+            break;
             case FIRSTNAME_MIDDLENAME_SURNAME:
                 fullName.append(firstName).
                          append(" ").
                          append(middleName).
                          append(" ").
                          append(surname);
+            break;
         }
 
         return fullName.toString();
@@ -90,14 +101,4 @@ class FullName {
         );
     }
 
-    private enum FullNameFormats {
-        SURNAME_FIRSTNAME_MIDDLENAME("SFM"),
-        FIRSTNAME_MIDDLENAME_SURNAME("FMS");
-
-        private final String fullNameFormat;
-
-        FullNameFormats(final String fullNameFormat) {
-            this.fullNameFormat = fullNameFormat;
-        }
-    }
 }
