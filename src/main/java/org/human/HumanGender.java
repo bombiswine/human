@@ -8,4 +8,14 @@ public enum HumanGender {
     HumanGender(final String gender) {
         this.gender = gender;
     }
+
+    public static boolean contains(final String humanGenderString) {
+        for (var humanGender : values()) {
+            if (humanGenderString.equals(humanGender.gender)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
