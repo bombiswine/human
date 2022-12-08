@@ -2,6 +2,8 @@ package org.human;
 
 import org.simple_date.SimpleDate;
 
+import java.util.Objects;
+
 public class Human {
     protected FullName    fullName;
     protected SimpleDate  birthDate;
@@ -84,5 +86,47 @@ public class Human {
 
     public int getWeight() {
         return weight;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Human human)) {
+            return false;
+        }
+
+        return getHeight() == human.getHeight()
+            && getWeight() == human.getWeight()
+            && getFullName().equals(human.getFullName())
+            && getBirthDate().equals(human.getBirthDate())
+            && getGender() == human.getGender()
+            && getNationality().equals(human.getNationality());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            getFullName(), getBirthDate(), getGender(),
+            getNationality(), getHeight(), getWeight()
+        );
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer humanInfoFormatString = new StringBuffer();
+        humanInfoFormatString.
+            append("full name: %s\n").
+            append("date of birth: %s\n").
+            append("sex: %s\n").
+            append("nationality: %s\n").
+            append("height: %s\n").
+            append("weight: %s");
+
+        return String.format(
+            humanInfoFormatString.toString(),
+            fullName, birthDate, gender, nationality, height, weight
+        );
     }
 }
