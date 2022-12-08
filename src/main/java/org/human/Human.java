@@ -40,17 +40,17 @@ public class Human {
                 "The null passed into Human's constructor as human gender argument"
             );
         }
-        if (nationality == null) {
+        if (nationality == null || nationality.isEmpty()) {
             throw new IllegalArgumentException(
                 "The null passed into Human's constructor as nationality argument"
             );
         }
-        if (height < 0) {
+        if (height <= 0) {
             throw new IllegalArgumentException(
                 "A negative height value passed into Human's constructor"
             );
         }
-        if (weight < 0) {
+        if (weight <= 0) {
             throw new IllegalArgumentException(
                 "A negative weight value passed into Human's constructor"
             );
