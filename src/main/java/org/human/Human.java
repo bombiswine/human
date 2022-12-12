@@ -4,6 +4,8 @@ import org.human.utilities.FullName;
 import org.human.utilities.HumanGender;
 import org.simple_date.SimpleDate;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 public class Human {
@@ -130,5 +132,21 @@ public class Human {
             humanInfoFormatString.toString(),
             fullName, birthDate, gender, nationality, height, weight
         );
+    }
+
+
+    public int getAge() {
+        final LocalDate birthDay = LocalDate.of(
+            getBirthDate().getYear(),
+            getBirthDate().getMonth(),
+            getBirthDate().getDay()
+        );
+
+        return Period.between(birthDay, LocalDate.now()).getYears();
+    }
+
+    public boolean isAdult() {
+        final int ADULT_AGE = 18;
+        return getAge() >= ADULT_AGE;
     }
 }
