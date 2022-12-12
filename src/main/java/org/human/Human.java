@@ -1,11 +1,13 @@
 package org.human;
 
+import org.human.utilities.FullName;
+import org.human.utilities.HumanGender;
 import org.simple_date.SimpleDate;
 
 import java.util.Objects;
 
 public class Human {
-    protected FullName    fullName;
+    protected FullName   fullName;
     protected SimpleDate  birthDate;
     protected HumanGender gender;
     protected String      nationality;

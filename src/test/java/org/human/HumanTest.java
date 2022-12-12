@@ -1,5 +1,6 @@
 package org.human;
 
+import org.human.utilities.FullName;
 import org.simple_date.SimpleDate;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -12,7 +13,7 @@ import static org.testng.Assert.assertNotNull;
 public class HumanTest {
     @Test(dataProvider = "humanConstructor_PositiveCase_Data")
     public static void humanConstructor_PositiveCase_Test(
-        final FullName   fullName,
+        final FullName fullName,
         final SimpleDate birthDate,
         final String     gender,
         final String     nationality,

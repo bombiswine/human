@@ -1,8 +1,8 @@
-package org.human;
+package org.human.utilities;
 
 import java.util.Objects;
 
-class FullName {
+public class FullName {
     private final String firstName;
     private final String middleName;
     private final String surname;

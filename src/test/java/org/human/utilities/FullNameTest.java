@@ -1,4 +1,4 @@
-package org.human;
+package org.human.utilities;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

@@ -1,4 +1,4 @@
-package org.human;
+package org.human.utilities;
 
 public enum HumanGender {
     MALE("Male"),
