@@ -66,7 +66,8 @@ public class HumanServiceTest {
     }
 
     @DataProvider
-    public static Object[][] getAdultsFrom_ReturnsArrayOfAdults_Data() throws DataFormatException {
+    public static Object[][] getAdultsFrom_ReturnsArrayOfAdults_Data()
+        throws DataFormatException {
         return new Object[][] {
             {
                 new Human[] { adultMan, nonAdultBoy, adultWoman, nonAdultGirl },
@@ -78,6 +79,25 @@ public class HumanServiceTest {
                 new Human[] { nonAdultBoy, nonAdultGirl },
                 new Human[] { }
             }
+        };
+    }
+
+    @Test(
+        dataProvider = "getAdultsFrom_ThrowsIllegalArgumentException_Data",
+        expectedExceptions = IllegalArgumentException.class
+    )
+    public static void getAdultsFrom_ThrowsIllegalArgumentException_Test(
+        final Human[] people
+    ) {
+        getAdultsFrom(people);
+    }
+
+    @DataProvider
+    public static Object[][] getAdultsFrom_ThrowsIllegalArgumentException_Data() {
+        return new Object[][] {
+            { null },
+            { new Human[] { null, adultMan, nonAdultBoy, adultWoman } },
+            { new Human[] { adultMan, nonAdultBoy, null, adultWoman } }
         };
     }
 }
