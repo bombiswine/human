@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import java.util.zip.DataFormatException;
 
 import static org.human.HumanService.getAdultsFrom;
+import static org.human.HumanService.getAgesArrayOf;
 import static org.testng.Assert.assertEquals;
 
 public class HumanServiceTest {
@@ -82,8 +83,33 @@ public class HumanServiceTest {
         };
     }
 
+    @Test(dataProvider = "getAgesArrayOf_ReturnsAgesArray_Data")
+    public static void getAgesArrayOf_ReturnsAgesArray_Test(
+        final Human[] people,
+        final int[] expectedAges
+    ) {
+        final int[] actualAges = getAgesArrayOf(people);
+        assertEquals(actualAges, expectedAges);
+    }
+
+    @DataProvider
+    public static Object[][] getAgesArrayOf_ReturnsAgesArray_Data() {
+        return new Object[][] {
+            {
+                new Human[] { adultMan, nonAdultBoy, adultWoman, nonAdultGirl },
+                new int[] { 20, 14, 24, 7 }
+            }, {
+                new Human[] { },
+                new int[] { }
+            }, {
+                new Human[] { adultMan, adultMan, adultMan },
+                new int[] { 20, 20, 20 }
+            }
+        };
+    }
+
     @Test(
-        dataProvider = "getAdultsFrom_ThrowsIllegalArgumentException_Data",
+        dataProvider = "getMethods_ThrowIllegalArgumentException_Data",
         expectedExceptions = IllegalArgumentException.class
     )
     public static void getAdultsFrom_ThrowsIllegalArgumentException_Test(
@@ -92,8 +118,18 @@ public class HumanServiceTest {
         getAdultsFrom(people);
     }
 
+    @Test(
+        dataProvider = "getMethods_ThrowIllegalArgumentException_Data",
+        expectedExceptions = IllegalArgumentException.class
+    )
+    public static void getAgesArrayOf_ThrowsIllegalArgumentException_Test(
+        final Human[] people
+    ) {
+        getAgesArrayOf(people);
+    }
+
     @DataProvider
-    public static Object[][] getAdultsFrom_ThrowsIllegalArgumentException_Data() {
+    public static Object[][] getMethods_ThrowIllegalArgumentException_Data() {
         return new Object[][] {
             { null },
             { new Human[] { null, adultMan, nonAdultBoy, adultWoman } },
