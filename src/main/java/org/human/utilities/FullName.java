@@ -1,9 +1,22 @@
-package org.human;
+package org.human.utilities;
 
-class FullName {
+import java.util.Objects;
+
+public class FullName {
     private final String firstName;
     private final String middleName;
     private final String surname;
+
+    private enum FullNameFormats {
+        SURNAME_FIRSTNAME_MIDDLENAME("SFM"),
+        FIRSTNAME_MIDDLENAME_SURNAME("FMS");
+
+        private final String fullNameFormat;
+
+        FullNameFormats(final String fullNameFormat) {
+            this.fullNameFormat = fullNameFormat;
+        }
+    }
 
     public FullName(
         final String firstName,
@@ -16,10 +29,9 @@ class FullName {
                 "FullName's constructor as first name"
             );
         }
-        if (middleName == null || middleName.isEmpty()) {
+        if (middleName == null) {
             throw new IllegalArgumentException(
-                "null or empty string passed into " +
-                "FullName's constructor as middle name"
+                "null passed into FullName's constructor as middle name"
             );
         }
         if (surname == null || surname.isEmpty()) {
@@ -55,26 +67,38 @@ class FullName {
                          append(middleName).
                          append(" ").
                          append(firstName);
-
+            break;
             case FIRSTNAME_MIDDLENAME_SURNAME:
                 fullName.append(firstName).
                          append(" ").
                          append(middleName).
                          append(" ").
                          append(surname);
+            break;
         }
 
         return fullName.toString();
     }
 
-    private enum FullNameFormats {
-        SURNAME_FIRSTNAME_MIDDLENAME("SFM"),
-        FIRSTNAME_MIDDLENAME_SURNAME("FMS");
-
-        private final String fullNameFormat;
-
-        FullNameFormats(final String fullNameFormat) {
-            this.fullNameFormat = fullNameFormat;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
+        if (!(o instanceof FullName fullName)) {
+            return false;
+        }
+
+        return getFirstName().equals(fullName.getFirstName())
+               && getMiddleName().equals(fullName.getMiddleName())
+               && getSurname().equals(fullName.getSurname());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            getFirstName(), getMiddleName(), getSurname()
+        );
+    }
+
 }

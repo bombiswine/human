@@ -1,10 +1,11 @@
-package org.human;
+package org.human.utilities;
 
 public enum HumanGender {
-    MALE("M"),
-    FEMALE("F");
+    MALE("Male"),
+    FEMALE("Female");
 
     private final String gender;
+
     HumanGender(final String gender) {
         this.gender = gender;
     }
@@ -17,5 +18,17 @@ public enum HumanGender {
         }
 
         return false;
+    }
+
+    public static HumanGender getGenderByValue(String gender) {
+        if (gender.equals("Male")) {
+            return MALE;
+        }
+        return FEMALE;
+    }
+
+    @Override
+    public String toString() {
+        return gender;
     }
 }
