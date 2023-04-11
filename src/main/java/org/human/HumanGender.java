@@ -1,8 +1,8 @@
-package org.human.utilities;
+package org.human;
 
 public enum HumanGender {
-    MALE("Male"),
-    FEMALE("Female");
+    MALE("male"),
+    FEMALE("female");
 
     private final String gender;
 
@@ -20,8 +20,13 @@ public enum HumanGender {
         return false;
     }
 
-    public static HumanGender getGenderByValue(String gender) {
-        if (gender.equals("Male")) {
+    public static HumanGender getGenderByValue(final String gender) {
+        if (!contains(gender.toLowerCase())) {
+            throw new IllegalArgumentException(
+                "The unknown gender was passed as String gender into HumanGender.HumanGender()"
+            );
+        }
+        if (gender.equalsIgnoreCase("male")) {
             return MALE;
         }
         return FEMALE;

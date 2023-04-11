@@ -1,11 +1,10 @@
 package org.human;
 
-import org.human.utilities.FullName;
-import org.simple_date.SimpleDate;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.time.LocalDate;
 import java.util.zip.DataFormatException;
 
 import static org.human.HumanService.getAdultsFrom;
@@ -22,38 +21,30 @@ public class HumanServiceTest {
     public static void setUp() throws DataFormatException {
         adultWoman = new Human(
             new FullName("Lucy", "Bella", "Earl"),
-            new SimpleDate("12.03.1998", "dd.MM.yyyy"),
+            LocalDate.of(1998, 3, 12),
             "Female",
-            "English",
-            175,
-            55
+            "English"
         );
 
         adultMan = new Human(
             new FullName("Alexandre", "Igorevich", "Merson"),
-            new SimpleDate("24.06.2002", "dd.MM.yyyy"),
+            LocalDate.of(2002, 6, 24),
             "Male",
-            "Russian",
-            178,
-            82
+            "Russian"
         );
 
         nonAdultGirl = new Human(
             new FullName("Annet", "", "McPhee"),
-            new SimpleDate("15.05.2015", "dd.MM.yyyy"),
+            LocalDate.of(2015, 5, 15),
             "Female",
-            "English",
-            135,
-            40
+            "English"
         );
 
         nonAdultBoy = new Human(
             new FullName("Julio", "", "Estades"),
-            new SimpleDate("06.07.2008", "dd.MM.yyyy"),
+            LocalDate.of(2008, 7, 6),
             "Male",
-            "Spanish",
-            178,
-            68
+            "Spanish"
         );
     }
 
@@ -67,8 +58,7 @@ public class HumanServiceTest {
     }
 
     @DataProvider
-    public static Object[][] getAdultsFrom_ReturnsArrayOfAdults_Data()
-        throws DataFormatException {
+    public static Object[][] getAdultsFrom_ReturnsArrayOfAdults_Data() {
         return new Object[][] {
             {
                 new Human[] { adultMan, nonAdultBoy, adultWoman, nonAdultGirl },
@@ -97,7 +87,7 @@ public class HumanServiceTest {
         return new Object[][] {
             {
                 new Human[] { adultMan, nonAdultBoy, adultWoman, nonAdultGirl },
-                new int[] { 20, 14, 24, 7 }
+                new int[] { 20, 14, 25, 7 }
             }, {
                 new Human[] { },
                 new int[] { }

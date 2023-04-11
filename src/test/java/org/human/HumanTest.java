@@ -1,11 +1,9 @@
 package org.human;
 
-import org.human.utilities.FullName;
-import org.simple_date.SimpleDate;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.zip.DataFormatException;
+import java.time.LocalDate;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -13,36 +11,27 @@ import static org.testng.Assert.assertNotNull;
 public class HumanTest {
     @Test(dataProvider = "humanConstructor_PositiveCase_Data")
     public static void humanConstructor_PositiveCase_Test(
-        final FullName fullName,
-        final SimpleDate birthDate,
-        final String     gender,
-        final String     nationality,
-        final int        height,
-        final int        weight
+        final FullName  fullName,
+        final LocalDate birthDate,
+        final String    gender,
+        final String    nationality
     ) {
-        Human person = new Human(
-            fullName, birthDate, gender, nationality, height, weight
-        );
+        final Human person = new Human(fullName, birthDate, gender, nationality);
         assertNotNull(person);
         assertEquals(person.getFullName(), fullName);
         assertEquals(person.getBirthDate(), birthDate);
         assertEquals(person.getGender().toString(), gender);
         assertEquals(person.getNationality(), nationality);
-        assertEquals(person.getHeight(), height);
-        assertEquals(person.getWeight(), weight);
     }
 
     @DataProvider
-    public static Object[][] humanConstructor_PositiveCase_Data()
-        throws DataFormatException {
+    public static Object[][] humanConstructor_PositiveCase_Data() {
         return new Object[][] {
             {
                 new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Female",
-                "English",
-                175,
-                65
+                LocalDate.of(1998, 3, 12),
+                "female",
+                "English"
             }
         };
     }
@@ -52,98 +41,29 @@ public class HumanTest {
         expectedExceptions = IllegalArgumentException.class
     )
     public static void humanConstructor_ThrowsIllegalArgumentException_Test(
-        final FullName   fullName,
-        final SimpleDate birthDate,
-        final String     gender,
-        final String     nationality,
-        final int        height,
-        final int        weight
+        final FullName  fullName,
+        final LocalDate birthDate,
+        final String    gender,
+        final String    nationality
     ) {
-        new Human(fullName, birthDate, gender, nationality, height, weight);
+        new Human(fullName, birthDate, gender, nationality);
     }
 
     @DataProvider
-    public static Object[][] humanConstructor_ThrowsIllegalArgumentException_Data()
-        throws DataFormatException {
+    public static Object[][] humanConstructor_ThrowsIllegalArgumentException_Data() {
+        final FullName  fullName    = new FullName( "Lucy", "Bella", "Earl" );
+        final LocalDate birthDate   = LocalDate.of(1998, 3, 12);
+        final String    gender      = "Female";
+        final String    nationality = "English";
+
         return new Object[][] {
-            {
-                null,
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Female",
-                "English",
-                175,
-                65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                null,
-                "Female",
-                "English",
-                175,
-                65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                null,
-                "English",
-                175,
-                65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Pansexual",
-                "English",
-                175,
-                65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "",
-                "English",
-                175,
-                65
-            },  {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Female",
-                null,
-                175,
-                65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Female",
-                "",
-                175,
-                65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Female",
-                "English",
-                -175,
-                65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Female",
-                "English",
-                0,
-                65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Female",
-                "English",
-                175,
-                -65
-            }, {
-                new FullName( "Lucy", "Bella", "Earl" ),
-                new SimpleDate("12.03.1998", "dd.MM.yyyy"),
-                "Female",
-                "English",
-                175,
-                0
-            }
+            { null, birthDate, gender, nationality },
+            { fullName, null, gender, nationality },
+            { fullName, birthDate, null, nationality },
+            { fullName, birthDate, "", nationality },
+            { fullName, birthDate, gender, null },
+            { fullName, birthDate, gender, "" },
+            { fullName, birthDate, "Pansexual", nationality }
         };
     }
 }

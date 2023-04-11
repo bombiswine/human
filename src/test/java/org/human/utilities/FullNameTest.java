@@ -1,5 +1,6 @@
 package org.human.utilities;
 
+import org.human.FullName;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

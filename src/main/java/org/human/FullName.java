@@ -1,4 +1,4 @@
-package org.human.utilities;
+package org.human;
 
 import java.util.Objects;
 
@@ -16,8 +16,8 @@ public class FullName {
         FullNameFormats(final String fullNameFormat) {
             this.fullNameFormat = fullNameFormat;
         }
-    }
 
+    }
     public FullName(
         final String firstName,
         final String middleName,
@@ -26,7 +26,7 @@ public class FullName {
         if (firstName == null || firstName.isEmpty()) {
             throw new IllegalArgumentException(
                 "null or empty string passed into " +
-                "FullName's constructor as first name"
+                    "FullName's constructor as first name"
             );
         }
         if (middleName == null) {
@@ -37,13 +37,24 @@ public class FullName {
         if (surname == null || surname.isEmpty()) {
             throw new IllegalArgumentException(
                 "null or empty string passed into " +
-                "FullName's constructor as surname"
+                    "FullName's constructor as surname"
             );
         }
 
         this.firstName  = firstName;
         this.middleName = middleName;
         this.surname    = surname;
+    }
+
+    public FullName(final FullName anotherFullName) {
+        if (anotherFullName == null) {
+            throw new IllegalArgumentException(
+                "null-ref passed into FullName's copying constructor"
+            );
+        }
+        firstName  = anotherFullName.getFirstName();
+        middleName = anotherFullName.getMiddleName();
+        surname    = anotherFullName.getSurname();
     }
 
     public String getFirstName() {
@@ -59,22 +70,22 @@ public class FullName {
     }
 
     public String getFullName(final FullNameFormats format) {
-        StringBuffer fullName = new StringBuffer();
+        StringBuilder fullName = new StringBuilder();
         switch (format) {
             case SURNAME_FIRSTNAME_MIDDLENAME:
                 fullName.append(surname).
-                         append(" ").
-                         append(middleName).
-                         append(" ").
-                         append(firstName);
-            break;
+                    append(" ").
+                    append(middleName).
+                    append(" ").
+                    append(firstName);
+                break;
             case FIRSTNAME_MIDDLENAME_SURNAME:
                 fullName.append(firstName).
-                         append(" ").
-                         append(middleName).
-                         append(" ").
-                         append(surname);
-            break;
+                    append(" ").
+                    append(middleName).
+                    append(" ").
+                    append(surname);
+                break;
         }
 
         return fullName.toString();
@@ -90,8 +101,8 @@ public class FullName {
         }
 
         return getFirstName().equals(fullName.getFirstName())
-               && getMiddleName().equals(fullName.getMiddleName())
-               && getSurname().equals(fullName.getSurname());
+                   && getMiddleName().equals(fullName.getMiddleName())
+                   && getSurname().equals(fullName.getSurname());
     }
 
     @Override
@@ -101,4 +112,8 @@ public class FullName {
         );
     }
 
+    @Override
+    public String toString() {
+        return getFullName(FullNameFormats.FIRSTNAME_MIDDLENAME_SURNAME);
+    }
 }
