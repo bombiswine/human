@@ -1,4 +1,4 @@
-package org.human;
+package imit.human;
 
 import java.util.Objects;
 

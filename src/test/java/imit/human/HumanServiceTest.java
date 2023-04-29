@@ -1,5 +1,6 @@
-package org.human;
+package imit.human;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -7,8 +8,8 @@ import org.testng.annotations.Test;
 import java.time.LocalDate;
 import java.util.zip.DataFormatException;
 
-import static org.human.HumanService.getAdultsFrom;
-import static org.human.HumanService.getAgesArrayOf;
+import static imit.human.HumanService.getAdultsFrom;
+import static imit.human.HumanService.getAgesArrayOf;
 import static org.testng.Assert.assertEquals;
 
 public class HumanServiceTest {
@@ -54,7 +55,7 @@ public class HumanServiceTest {
         final Human[] expectedAdults
     ) {
         final Human[] actualAdults = getAdultsFrom(people);
-        assertEquals(actualAdults, expectedAdults);
+        Assert.assertEquals(actualAdults, expectedAdults);
     }
 
     @DataProvider

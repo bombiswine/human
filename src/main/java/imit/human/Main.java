@@ -1,4 +1,4 @@
-package org.human;
+package imit.human;
 
 public class Main {
     public static void main(String[] args) {

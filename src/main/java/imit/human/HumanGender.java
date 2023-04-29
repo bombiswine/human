@@ -1,4 +1,4 @@
-package org.human;
+package imit.human;
 
 public enum HumanGender {
     MALE("male"),

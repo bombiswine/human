@@ -1,4 +1,4 @@
-package org.human;
+package imit.human;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
