@@ -1,4 +1,4 @@
-package imit.flat;
+package imit.house;
 
 import imit.human.Human;
 

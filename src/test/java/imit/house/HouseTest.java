@@ -1,4 +1,4 @@
-package imit.flat;
+package imit.house;
 
 
 import org.testng.annotations.DataProvider;
