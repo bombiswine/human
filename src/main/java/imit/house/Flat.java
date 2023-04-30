@@ -61,7 +61,7 @@ public class Flat {
                 .sorted((h1, h2) -> CharSequence.compare(h1.getFullNameAsString(), h2.getFullNameAsString()))
                 .collect(Collectors.toList())
             ).orElseThrow(() -> new IllegalArgumentException("Error: an attempt to replace owners list with null-ref"));
-
+        // why it doesn't work?
         flat = new Flat(flat.getNumber(), flat.getArea(), newOwners);
     }
 }

@@ -66,9 +66,10 @@ public class FlatTest {
 
     @DataProvider
     public static Object[][] flatConstructor_throwsNullPointerException_thenCorrect_test() {
-        return new Object[][] { { 41,  50, null }, };
+        return new Object[][] { { 41,  50, null } };
     }
 
+    // help required
     @Test(dataProvider = "changeOwners_returnsFlatObject_thenCorrect_data")
     public static void changeOwners_returnsFlatObject_thenCorrect_test(
         final Flat flat,
