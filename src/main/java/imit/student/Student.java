@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class Student extends Human {
     private String university;
@@ -47,13 +46,6 @@ public class Student extends Human {
     ) {
         super(person);
         final Predicate<String> notEmptyNotBlankNotTooLongString = s -> !s.isEmpty() && !s.isBlank() && s.length() < 200;
-
-//        final Stream<?> tmpStream = Stream.of(
-//            Optional.ofNullable(university),
-//            Optional.ofNullable(faculty),
-//            Optional.ofNullable(specialization)
-//        );
-
         Optional.of(university)
             .filter(Objects::nonNull)
             .filter(notEmptyNotBlankNotTooLongString)
@@ -138,5 +130,26 @@ public class Student extends Human {
         if (!specialization.equals(newSpecialization)) {
             specialization = newSpecialization;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Student student)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        return getUniversity().equals(student.getUniversity())
+            && getFaculty().equals(student.getFaculty())
+            && getSpecialization().equals(student.getSpecialization());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getUniversity(), getFaculty(), getSpecialization());
     }
 }

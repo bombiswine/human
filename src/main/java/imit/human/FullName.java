@@ -18,6 +18,7 @@ public class FullName {
         }
 
     }
+
     public FullName(
         final String firstName,
         final String middleName,
@@ -114,6 +115,6 @@ public class FullName {
 
     @Override
     public String toString() {
-        return getFullName(FullNameFormats.FIRSTNAME_MIDDLENAME_SURNAME);
+        return getFullName(FullNameFormats.SURNAME_FIRSTNAME_MIDDLENAME);
     }
 }

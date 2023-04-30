@@ -72,6 +72,10 @@ public class Human implements Comparable<Human> {
         return fullName.getSurname();
     }
 
+    public String getFullNameAsString() {
+        return getFullName().toString();
+    }
+
     public LocalDate getBirthDate() {
         return birthDate;
     }

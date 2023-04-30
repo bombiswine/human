@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 public class Flat {
     private final int number;
     private final int area;
-    private final List<Human> owners;
+    private final List<? extends Human> owners;
 
 
     public Flat(
         final int number,
         final int area,
-        final List<Human> owners
+        final List<? extends Human> owners
     ) {
 
         this.number = Optional.of(number)
@@ -31,8 +31,9 @@ public class Flat {
             .filter(Objects::nonNull)
             .map(list -> list.stream()
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList()))
-            .orElseThrow(() -> new IllegalArgumentException("The null-ref passed as list of flat owners"));
+                .sorted((h1, h2) -> CharSequence.compare(h1.getFullNameAsString(), h2.getFullNameAsString()))
+                .collect(Collectors.toList())
+            ).orElseThrow(() -> new IllegalArgumentException("The null-ref passed as list of flat owners"));
 
     }
 
@@ -44,7 +45,7 @@ public class Flat {
         return area;
     }
 
-    public List<Human> getOwners() {
+    public List<? extends Human> getOwners() {
         return owners;
     }
 }
