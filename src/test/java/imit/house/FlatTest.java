@@ -1,25 +1,88 @@
 package imit.house;
 
 import imit.human.Human;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.util.List;
 
 import static imit.TestingData.*;
+import static org.testng.AssertJUnit.assertEquals;
 
 public class FlatTest {
-    static final List<? extends Human> flatOwners = List.of(
-        studentAlexandreMerson,
-        personPierreVeron
-    );
-
-    @BeforeClass
-    public static void setUp() {
+    @Test(dataProvider = "flatConstructor_createsObject_thenCorrect_data")
+    public static void flatConstructor_createsObject_thenCorrect_test(
+        final int number,
+        final int area,
+        final List<? extends Human> owners
+    ) {
+        final Flat flat = new Flat(number, area, owners);
+        assertEquals(flat.getNumber(), number);
+        assertEquals(flat.getArea(), area);
+        assertEquals(flat.getOwners(), owners);
     }
 
-    @AfterClass
-    public static void tearDown() {
+    @DataProvider
+    public static Object[][] flatConstructor_createsObject_thenCorrect_data() {
+        return new Object[][] {
+            { 41, 50, List.of(personAlexandreMerson, personPierreVeron) },
+            { 41, 50, List.of(studentAlexandreMerson, personPierreVeron) },
+            { 41, 50, List.of(personPierreVeron) },
+        };
+    }
 
+    @Test(
+        dataProvider = "flatConstructor_throwsIllegalArgumentException_thenCorrect_test",
+        expectedExceptions = IllegalArgumentException.class
+    )
+    public static void flatConstructor_throwsIllegalArgumentException_thenCorrect_test(
+        final int number,
+        final int area,
+        final List<? extends Human> owners
+    ) {
+        new Flat(number, area, owners);
+    }
+
+    @DataProvider
+    public static Object[][] flatConstructor_throwsIllegalArgumentException_thenCorrect_test() {
+        return new Object[][] {
+            { -41,  50, List.of(studentAlexandreMerson, personPierreVeron) },
+            {  41, -50, List.of(studentAlexandreMerson, personPierreVeron) },
+            {  41,  50, List.of() },
+        };
+    }
+
+    @Test(
+        dataProvider = "flatConstructor_throwsNullPointerException_thenCorrect_test",
+        expectedExceptions = NullPointerException.class
+    )
+    public static void flatConstructor_throwsNullPointerException_thenCorrect_test(
+        final int number,
+        final int area,
+        final List<? extends Human> owners
+    ) {
+        new Flat(number, area, owners);
+    }
+
+    @DataProvider
+    public static Object[][] flatConstructor_throwsNullPointerException_thenCorrect_test() {
+        return new Object[][] { { 41,  50, null }, };
+    }
+
+    @Test(dataProvider = "changeOwners_returnsFlatObject_thenCorrect_data")
+    public static void changeOwners_returnsFlatObject_thenCorrect_test(
+        final Flat flat,
+        final List<? extends Human> newOwners
+    ) {
+        Flat.changeOwners(flat, newOwners);
+        assertEquals(newOwners, flat.getOwners());
+    }
+
+    @DataProvider
+    public static Object[][] changeOwners_returnsFlatObject_thenCorrect_data() {
+        final Flat flat = new Flat(41,  50, List.of(personAlexandreMerson, personPierreVeron));
+        return new Object[][] {
+            { flat, List.of(personAlexandreMerson) },
+        };
     }
 }

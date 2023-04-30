@@ -29,11 +29,12 @@ public class Flat {
 
         this.owners = Optional.of(owners)
             .filter(Objects::nonNull)
+            .filter(list -> !list.isEmpty())
             .map(list -> list.stream()
                 .filter(Objects::nonNull)
                 .sorted((h1, h2) -> CharSequence.compare(h1.getFullNameAsString(), h2.getFullNameAsString()))
                 .collect(Collectors.toList())
-            ).orElseThrow(() -> new IllegalArgumentException("The null-ref passed as list of flat owners"));
+            ).orElseThrow(() -> new IllegalArgumentException("Error: invalid flat owners list passed into Flat constructor"));
 
     }
 
@@ -47,5 +48,20 @@ public class Flat {
 
     public List<? extends Human> getOwners() {
         return owners;
+    }
+
+    public static void changeOwners(
+        Flat flat,
+        List<? extends Human> newOwners
+    ) {
+        newOwners = Optional.ofNullable(newOwners)
+            .filter(Objects::nonNull)
+            .map(list -> list.stream()
+                .filter(Objects::nonNull)
+                .sorted((h1, h2) -> CharSequence.compare(h1.getFullNameAsString(), h2.getFullNameAsString()))
+                .collect(Collectors.toList())
+            ).orElseThrow(() -> new IllegalArgumentException("Error: an attempt to replace owners list with null-ref"));
+
+        flat = new Flat(flat.getNumber(), flat.getArea(), newOwners);
     }
 }
