@@ -20,23 +20,22 @@ public class House {
         final String cadastralNumber,
         final List<Flat> flats
     ) {
-        this.houseHead = Optional.ofNullable(houseHead)
-            .filter(Objects::nonNull)
-            .orElseThrow(() -> new IllegalArgumentException("Error: invalid houseHead"));
+        this.houseHead = Optional.of(houseHead).get();
 
-        this.address = Optional.ofNullable(address)
-            .filter(Objects::nonNull)
+        this.address = Optional.of(address)
             .filter(s -> !s.isEmpty() && !s.isBlank())
             .orElseThrow(() -> new IllegalArgumentException("Error: invalid address"));
 
-        this.cadastralNumber = Optional.ofNullable(cadastralNumber)
-            .filter(Objects::nonNull)
+        this.cadastralNumber = Optional.of(cadastralNumber)
             .filter(s -> !s.isEmpty() && !s.isBlank())
             .orElseThrow(() -> new IllegalArgumentException("Error: invalid cadastral number"));
-        this.flats = Optional.ofNullable(flats)
+
+        this.flats = Optional.of(flats)
+            .filter(list -> !list.isEmpty())
             .map(list -> list.stream()
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparingInt(Flat::getNumber))
+//                .anyMatch(flat -> flat.getOwners().contains(houseHead))
                 .collect(Collectors.toList())
             ).orElseThrow(() -> new IllegalArgumentException("Error: invalid flats list"));
     }
