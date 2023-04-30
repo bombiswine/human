@@ -14,7 +14,7 @@ public class FlatTest {
     public static void flatConstructor_createsObject_thenCorrect_test(
         final int number,
         final int area,
-        final List<? extends Human> owners
+        final List<Human> owners
     ) {
         final Flat flat = new Flat(number, area, owners);
         assertEquals(flat.getNumber(), number);
@@ -38,7 +38,7 @@ public class FlatTest {
     public static void flatConstructor_throwsIllegalArgumentException_thenCorrect_test(
         final int number,
         final int area,
-        final List<? extends Human> owners
+        final List<Human> owners
     ) {
         new Flat(number, area, owners);
     }
@@ -59,7 +59,7 @@ public class FlatTest {
     public static void flatConstructor_throwsNullPointerException_thenCorrect_test(
         final int number,
         final int area,
-        final List<? extends Human> owners
+        final List<Human> owners
     ) {
         new Flat(number, area, owners);
     }
@@ -73,7 +73,7 @@ public class FlatTest {
     @Test(dataProvider = "changeOwners_returnsFlatObject_thenCorrect_data")
     public static void changeOwners_returnsFlatObject_thenCorrect_test(
         final Flat flat,
-        final List<? extends Human> newOwners
+        final List<Human> newOwners
     ) {
         Flat.changeOwners(flat, newOwners);
         assertEquals(newOwners, flat.getOwners());

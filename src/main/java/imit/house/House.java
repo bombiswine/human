@@ -2,10 +2,7 @@ package imit.house;
 
 import imit.human.Human;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class House {
@@ -33,19 +30,20 @@ public class House {
         this.flats = Optional.of(flats)
             .filter(list -> !list.isEmpty())
             .map(list -> list.stream()
-                .filter(Objects::nonNull)
-                .sorted(Comparator.comparingInt(Flat::getNumber))
+                    .filter(Objects::nonNull)
+                    .sorted(Comparator.comparingInt(Flat::getNumber))
 //                .anyMatch(flat -> flat.getOwners().contains(houseHead))
-                .collect(Collectors.toList())
+                    .collect(Collectors.toList())
             ).orElseThrow(() -> new IllegalArgumentException("Error: invalid flats list"));
     }
 
     public void setHouseHead(final Human person) {
-        if (!person.equals(houseHead)) {
-            houseHead = Optional.ofNullable(person)
-                .filter(Objects::nonNull)
-                .orElseThrow(() -> new IllegalArgumentException("Error: invalid houseHead"));
+        if (!getResidents().contains(person)) {
+            throw new IllegalArgumentException("Error: person isn't a resident of the house");
         }
+        houseHead = Optional.of(person).orElseThrow(
+            () -> new NullPointerException("Error: an attempt to replace current head of the house with null")
+        );
     }
 
     public Human getHouseHead() {
@@ -62,5 +60,14 @@ public class House {
 
     public List<Flat> getFlats() {
         return flats;
+    }
+
+    public List<Human> getResidents() {
+        Set<Human> residents = new HashSet<>();
+        for (Flat flat : getFlats()) {
+            residents.addAll(flat.getOwners());
+        }
+
+        return residents.stream().toList();
     }
 }

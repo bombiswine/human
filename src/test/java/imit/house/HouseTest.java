@@ -119,4 +119,92 @@ public class HouseTest {
 //            { houseHead, address, cadastralNumber, flatsWithoutFlatOfHouseHead },
         };
     }
+
+    @Test(dataProvider = "setHouseHead_changesHouseHead_thenCorrect_test")
+    public static void setHouseHead_changesHouseHead_thenCorrect_test(
+        House house,
+        final Human newHouseHead
+    ) {
+        house.setHouseHead(newHouseHead);
+        assertEquals(newHouseHead, house.getHouseHead());
+    }
+
+    @DataProvider
+    public static Object[][] setHouseHead_changesHouseHead_thenCorrect_test() {
+        final Human  houseHead = personPierreVeron;
+        final String address = "Clavel's Street, 14";
+        final String cadastralNumber = "45";
+
+        final List<Flat> allFlats = List.of(
+            new Flat(1, 50, List.of(personAlexandreMerson)),
+            new Flat(2, 60, List.of(personLucyBrown)),
+            new Flat(3, 50, List.of(personAnnetBeaumarchais)),
+            new Flat(4, 60, List.of(personPierreVeron))
+        );
+
+        final House smallHouse = new House(houseHead, address, cadastralNumber, allFlats);
+
+        return new Object[][] {
+            { smallHouse, personPierreVeron },
+            { smallHouse, personLucyBrown },
+        };
+    }
+
+    @Test(
+        dataProvider = "setHouseHead_throwsIllegalArgumentException_thenCorrect_data",
+        expectedExceptions = IllegalArgumentException.class
+    )
+    public static void setHouseHead_throwsIllegalArgumentException_thenCorrect_test(
+        House house,
+        final Human newHouseHead
+    ) {
+        house.setHouseHead(newHouseHead);
+    }
+
+    @DataProvider
+    public static Object[][] setHouseHead_throwsIllegalArgumentException_thenCorrect_data() {
+        final Human  houseHead = personPierreVeron;
+        final String address = "Clavel's Street, 14";
+        final String cadastralNumber = "45";
+
+        final List<Flat> allFlats = List.of(
+            new Flat(1, 50, List.of(personAlexandreMerson)),
+            new Flat(2, 60, List.of(personLucyBrown)),
+            new Flat(3, 50, List.of(personAnnetBeaumarchais)),
+            new Flat(4, 60, List.of(personPierreVeron))
+        );
+
+        final House smallHouse = new House(houseHead, address, cadastralNumber, allFlats);
+
+        return new Object[][] { { smallHouse, personArielGreen } };
+    }
+
+    @Test(
+        dataProvider = "setHouseHead_throwsNullPointerException_thenCorrect_data",
+        expectedExceptions = IllegalArgumentException.class
+    )
+    public static void setHouseHead_throwsNullPointerException_thenCorrect_test(
+        House house,
+        final Human newHouseHead
+    ) {
+        house.setHouseHead(newHouseHead);
+    }
+
+    @DataProvider
+    public static Object[][] setHouseHead_throwsNullPointerException_thenCorrect_data() {
+        final Human  houseHead = personPierreVeron;
+        final String address = "Clavel's Street, 14";
+        final String cadastralNumber = "45";
+
+        final List<Flat> allFlats = List.of(
+            new Flat(1, 50, List.of(personAlexandreMerson)),
+            new Flat(2, 60, List.of(personLucyBrown)),
+            new Flat(3, 50, List.of(personAnnetBeaumarchais)),
+            new Flat(4, 60, List.of(personPierreVeron))
+        );
+
+        final House smallHouse = new House(houseHead, address, cadastralNumber, allFlats);
+
+        return new Object[][] { { smallHouse, null } };
+    }
 }

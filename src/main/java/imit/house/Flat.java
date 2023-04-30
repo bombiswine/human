@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 public class Flat {
     private final int number;
     private final int area;
-    private final List<? extends Human> owners;
+    private final List<Human> owners;
 
 
     public Flat(
         final int number,
         final int area,
-        final List<? extends Human> owners
+        final List<Human> owners
     ) {
 
         this.number = Optional.of(number)
@@ -52,7 +52,7 @@ public class Flat {
 
     public static void changeOwners(
         Flat flat,
-        List<? extends Human> newOwners
+        List<Human> newOwners
     ) {
         newOwners = Optional.ofNullable(newOwners)
             .filter(Objects::nonNull)
