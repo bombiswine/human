@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static imit.TestingData.*;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.Assert.assertEquals;
 
 public class FlatTest {
     @Test(dataProvider = "flatConstructor_createsObject_thenCorrect_data")
