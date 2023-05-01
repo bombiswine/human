@@ -3,6 +3,8 @@ package imit.house;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -19,7 +21,9 @@ public class HouseSerializationService {
             .filter(Files::exists)
             .orElseThrow(FileNotFoundException::new);
 
-        try (final ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename.toFile()))) {
+        try (final ObjectOutputStream oos = new ObjectOutputStream(
+            new FileOutputStream(filename.toFile()))
+        ) {
             oos.writeObject(house);
         }
     }
@@ -31,7 +35,10 @@ public class HouseSerializationService {
             .filter(Files::exists)
             .orElseThrow(FileNotFoundException::new);
 
-        try (ObjectInput ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename.toFile())))) {
+        try (final ObjectInput ois = new ObjectInputStream(
+            new BufferedInputStream(
+                new FileInputStream(filename.toFile())))
+        ) {
             return (House) ois.readObject();
         }
     }

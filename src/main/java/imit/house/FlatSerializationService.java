@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 public class FlatSerializationService {
-    public static void serializeHouse(
+    public static void serializeFlat(
         final @NotNull Flat flat,
         final @NotNull Path filename
     ) throws IOException {
@@ -24,7 +24,7 @@ public class FlatSerializationService {
         }
     }
 
-    public static Flat deserializeHouse(
+    public static Flat deserializeFlat(
         final @NotNull Path filename
     ) throws IOException, ClassNotFoundException {
         Optional.of(filename)

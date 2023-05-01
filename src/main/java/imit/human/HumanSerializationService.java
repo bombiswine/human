@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 public class HumanSerializationService {
-    public static void serializeHouse(
+    public static void serializeHuman(
         final @NotNull Human human,
         final @NotNull Path filename
     ) throws IOException {
@@ -24,7 +24,7 @@ public class HumanSerializationService {
         }
     }
 
-    public static Human deserializeHouse(
+    public static Human deserializeHuman(
         final @NotNull Path filename
     ) throws IOException, ClassNotFoundException {
         Optional.of(filename)
