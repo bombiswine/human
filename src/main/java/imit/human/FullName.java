@@ -1,8 +1,9 @@
 package imit.human;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class FullName {
+public class FullName implements Serializable {
     private final String firstName;
     private final String middleName;
     private final String surname;

@@ -116,7 +116,7 @@ public class HouseTest {
             { houseHead, "  \n \t\n", cadastralNumber, allFlats },
             { houseHead, address, "  \n \t\n", allFlats },
             { houseHead, address, cadastralNumber, List.of() },
-//            { houseHead, address, cadastralNumber, flatsWithoutFlatOfHouseHead },
+//            { houseHead, address, cadastralNumber, flatsWithoutFlatOfHouseHead }
         };
     }
 

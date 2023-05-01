@@ -1,10 +1,11 @@
 package imit.human;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
 
-public class Human implements Comparable<Human> {
+public class Human implements Comparable<Human>, Serializable {
     protected FullName    fullName;
     protected LocalDate   birthDate;
     protected HumanGender gender;
