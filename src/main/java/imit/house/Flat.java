@@ -47,7 +47,7 @@ public class Flat implements Serializable {
         return area;
     }
 
-    public List<? extends Human> getOwners() {
+    public List<Human> getOwners() {
         return owners;
     }
 
