@@ -47,19 +47,16 @@ public class Student extends Human {
         super(person);
         final Predicate<String> notEmptyNotBlankNotTooLongString = s -> !s.isEmpty() && !s.isBlank() && s.length() < 200;
         Optional.of(university)
-            .filter(Objects::nonNull)
             .filter(notEmptyNotBlankNotTooLongString)
             .map(String::toLowerCase)
             .orElseThrow(() -> new IllegalArgumentException("Error: University string is invalid"));
 
         Optional.of(faculty)
-            .filter(Objects::nonNull)
             .filter(notEmptyNotBlankNotTooLongString)
             .map(String::toLowerCase)
             .orElseThrow(() -> new IllegalArgumentException("Error: faculty string is invalid"));
 
         Optional.of(specialization)
-            .filter(Objects::nonNull)
             .filter(notEmptyNotBlankNotTooLongString)
             .map(String::toLowerCase)
             .orElseThrow(() -> new IllegalArgumentException("Error: specialization string is invalid"));
@@ -151,5 +148,19 @@ public class Student extends Human {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getUniversity(), getFaculty(), getSpecialization());
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuffer("Student{")
+            .append("university='").append(university).append('\'')
+            .append(", faculty='").append(faculty).append('\'')
+            .append(", specialization='").append(specialization).append('\'')
+            .append(", fullName=").append(fullName)
+            .append(", birthDate=").append(birthDate)
+            .append(", gender=").append(gender)
+            .append(", nationality='").append(nationality).append('\'')
+            .append('}')
+            .toString();
     }
 }
