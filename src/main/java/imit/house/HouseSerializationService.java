@@ -1,7 +1,5 @@
 package imit.house;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -11,8 +9,8 @@ import java.util.Optional;
 
 public class HouseSerializationService {
     public static void serializeHouse(
-        final @NotNull House house,
-        final @NotNull Path filename
+        final House house,
+        final Path filename
     ) throws IOException {
         Optional.of(house)
             .orElseThrow(IllegalArgumentException::new);
@@ -29,7 +27,7 @@ public class HouseSerializationService {
     }
 
     public static House deserializeHouse(
-        final @NotNull Path filename
+        final Path filename
     ) throws IOException, ClassNotFoundException {
         Optional.of(filename)
             .filter(Files::exists)

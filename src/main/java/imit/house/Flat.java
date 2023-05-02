@@ -13,7 +13,6 @@ public class Flat implements Serializable {
     private final int area;
     private final List<Human> owners;
 
-
     public Flat(
         final int number,
         final int area,
@@ -55,8 +54,7 @@ public class Flat implements Serializable {
         Flat flat,
         List<Human> newOwners
     ) {
-        newOwners = Optional.ofNullable(newOwners)
-            .filter(Objects::nonNull)
+        newOwners = Optional.of(newOwners)
             .map(list -> list.stream()
                 .filter(Objects::nonNull)
                 .sorted((h1, h2) -> CharSequence.compare(h1.getFullNameAsString(), h2.getFullNameAsString()))
