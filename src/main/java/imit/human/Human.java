@@ -1,5 +1,13 @@
 package imit.human;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import imit.serializators.MyLocalDateDeserializer;
+import imit.serializators.MyLocalDateSerializer;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
@@ -7,10 +15,15 @@ import java.util.Objects;
 
 public class Human implements Comparable<Human>, Serializable {
     protected FullName    fullName;
+
+    @JsonSerialize(using = MyLocalDateSerializer.class)
+    @JsonDeserialize(using = MyLocalDateDeserializer.class)
     protected LocalDate   birthDate;
+
     protected HumanGender gender;
     protected String      nationality;
 
+    @JsonCreator
     public Human(
         final FullName  fullName,
         final LocalDate birthDate,
@@ -57,6 +70,7 @@ public class Human implements Comparable<Human>, Serializable {
         nationality = person.getNationality();
     }
 
+    @JsonGetter("fullName")
     public FullName getFullName() {
         return fullName;
     }
@@ -77,14 +91,17 @@ public class Human implements Comparable<Human>, Serializable {
         return getFullName().toString();
     }
 
+    @JsonGetter("birthDate")
     public LocalDate getBirthDate() {
         return birthDate;
     }
 
+    @JsonGetter("gender")
     public HumanGender getGender() {
         return gender;
     }
 
+    @JsonGetter("nationality")
     public String getNationality() {
         return nationality;
     }

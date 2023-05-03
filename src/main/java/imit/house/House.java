@@ -1,9 +1,22 @@
 package imit.house;
 
+import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+//import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import imit.human.Human;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.stream.Collectors;
 
 public class House implements Serializable {
@@ -12,6 +25,19 @@ public class House implements Serializable {
     private final String cadastralNumber;
     private final List<Flat> flats;
 
+//    public House() {
+//        this.address = "";
+//        this.cadastralNumber = "";
+//        this.flats = new ArrayList<>(0);
+//        this.houseHead = new Human(
+//            new FullName("Alexandre", "Igorevich", "Merson"),
+//            LocalDate.of(2002, 6, 24),
+//            "Male",
+//            "Russian"
+//        );
+//    }
+
+    @JsonCreator
     public House(
         final Human houseHead,
         final String address,
@@ -46,18 +72,21 @@ public class House implements Serializable {
         );
     }
 
+    @JsonGetter("houseHead")
     public Human getHouseHead() {
         return houseHead;
     }
-
+    @JsonGetter("address")
     public String getAddress() {
         return address;
     }
 
+    @JsonGetter("cadastralNumber")
     public String getCadastralNumber() {
         return cadastralNumber;
     }
 
+    @JsonGetter("flats")
     public List<Flat> getFlats() {
         return flats;
     }
@@ -90,6 +119,7 @@ public class House implements Serializable {
         return Objects.hash(getHouseHead(), getAddress(), getCadastralNumber(), getFlats());
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return new StringBuffer("House { ")
@@ -99,5 +129,31 @@ public class House implements Serializable {
             .append(", flats = ").append(flats)
             .append(" } ")
             .toString();
+    }
+
+    public static void serializeTo(
+        final House house,
+        final Path filename
+    ) throws IOException {
+        Objects.requireNonNull(filename, "Error: the null ref passed as Path filename into House.serializeTo");
+        ObjectMapper objMapper = new ObjectMapper();
+        objMapper.registerModule(new JavaTimeModule());
+        objMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objMapper.writeValue(filename.toFile(), house);
+    }
+
+    public static House deserializeFrom(
+        final Path jsonFileName
+    ) throws IOException {
+        Optional.of(jsonFileName)
+            .filter(Files::exists)
+            .orElseThrow(FileNotFoundException::new);
+
+        final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+//        objectMapper.registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
+
+        return objectMapper.readValue(jsonFileName.toFile(), imit.house.House.class);
     }
 }

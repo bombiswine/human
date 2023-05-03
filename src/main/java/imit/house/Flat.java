@@ -50,18 +50,17 @@ public class Flat implements Serializable {
         return owners;
     }
 
-    public static void changeOwners(
-        Flat flat,
-        List<Human> newOwners
+    public void changeOwners(
+        final List<Human> newOwners
     ) {
-        newOwners = Optional.of(newOwners)
+        owners.clear();
+        owners.addAll(Optional.of(newOwners)
             .map(list -> list.stream()
                 .filter(Objects::nonNull)
                 .sorted((h1, h2) -> CharSequence.compare(h1.getFullNameAsString(), h2.getFullNameAsString()))
                 .collect(Collectors.toList())
-            ).orElseThrow(() -> new IllegalArgumentException("Error: an attempt to replace owners list with null-ref"));
-        // why it doesn't work?
-        flat = new Flat(flat.getNumber(), flat.getArea(), newOwners);
+            ).orElseThrow(() -> new IllegalArgumentException("Error: an attempt to replace owners list with null-ref"))
+        );
     }
 
     @Override
@@ -84,11 +83,10 @@ public class Flat implements Serializable {
 
     @Override
     public String toString() {
-        return new StringBuffer("Flat { ")
-            .append("number = ").append(number)
-            .append(", area = ").append(area)
-            .append(", owners = ").append(owners)
-            .append(" }")
-            .toString();
+        return "Flat { " +
+            "number = " + number +
+            ", area = " + area +
+            ", owners = " + owners +
+            " }";
     }
 }

@@ -69,14 +69,13 @@ public class FlatTest {
         return new Object[][] { { 41,  50, null } };
     }
 
-    // help required
     @Test(dataProvider = "changeOwners_returnsFlatObject_thenCorrect_data")
     public static void changeOwners_returnsFlatObject_thenCorrect_test(
         final Flat flat,
         final List<Human> newOwners
     ) {
-        Flat.changeOwners(flat, newOwners);
-//        assertEquals(newOwners, flat.getOwners());
+        flat.changeOwners(newOwners);
+        assertEquals(newOwners, flat.getOwners());
     }
 
     @DataProvider

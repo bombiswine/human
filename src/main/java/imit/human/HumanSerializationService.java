@@ -1,7 +1,5 @@
 package imit.human;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,8 +7,8 @@ import java.util.Optional;
 
 public class HumanSerializationService {
     public static void serializeHuman(
-        final @NotNull Human human,
-        final @NotNull Path filename
+        final Human human,
+        final Path filename
     ) throws IOException {
         Optional.of(human)
             .orElseThrow(IllegalArgumentException::new);
@@ -25,7 +23,7 @@ public class HumanSerializationService {
     }
 
     public static Human deserializeHuman(
-        final @NotNull Path filename
+        final Path filename
     ) throws IOException, ClassNotFoundException {
         Optional.of(filename)
             .filter(Files::exists)

@@ -12,8 +12,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static imit.TestingData.*;
-import static imit.house.HouseSerializationService.deserializeHouse;
-import static imit.house.HouseSerializationService.serializeHouse;
+import static imit.serializators.HouseSerializationService.deserializeHouse;
+import static imit.serializators.HouseSerializationService.serializeHouse;
 import static org.testng.Assert.assertEquals;
 
 public class HouseSerializationServiceTest {
