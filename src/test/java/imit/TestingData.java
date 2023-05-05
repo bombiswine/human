@@ -183,7 +183,9 @@ public class TestingData {
         "French"
     );
 
-    public final static House smallHouse = new House(
+    public final static Flat FLAT = new Flat(1, 50, List.of(personAlexandreMerson, personPierreVeron));
+
+    public final static House SMALL_HOUSE = new House(
         personPierreVeron,
         "Clavel's Street, 14",
         "45",
