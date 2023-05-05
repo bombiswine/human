@@ -1,5 +1,9 @@
 package imit.human;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,22 +12,11 @@ public class FullName implements Serializable {
     private final String middleName;
     private final String surname;
 
-    private enum FullNameFormats {
-        SURNAME_FIRSTNAME_MIDDLENAME("SFM"),
-        FIRSTNAME_MIDDLENAME_SURNAME("FMS");
-
-        private final String fullNameFormat;
-
-        FullNameFormats(final String fullNameFormat) {
-            this.fullNameFormat = fullNameFormat;
-        }
-
-    }
-
+    @JsonCreator
     public FullName(
-        final String firstName,
-        final String middleName,
-        final String surname
+        final @JsonProperty("firstName") String firstName,
+        final @JsonProperty("middleName") String middleName,
+        final @JsonProperty("surname") String surname
     ) {
         if (firstName == null || firstName.isEmpty()) {
             throw new IllegalArgumentException(
@@ -59,38 +52,19 @@ public class FullName implements Serializable {
         surname    = anotherFullName.getSurname();
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
+    @JsonGetter("surname")
     public String getSurname() {
         return surname;
     }
 
-    public String getFullName(final FullNameFormats format) {
-        StringBuilder fullName = new StringBuilder();
-        switch (format) {
-            case SURNAME_FIRSTNAME_MIDDLENAME:
-                fullName.append(surname).
-                    append(" ").
-                    append(middleName).
-                    append(" ").
-                    append(firstName);
-                break;
-            case FIRSTNAME_MIDDLENAME_SURNAME:
-                fullName.append(firstName).
-                    append(" ").
-                    append(middleName).
-                    append(" ").
-                    append(surname);
-                break;
-        }
+    @JsonGetter("firstName")
+    public String getFirstName() {
+        return firstName;
+    }
 
-        return fullName.toString();
+    @JsonGetter("middleName")
+    public String getMiddleName() {
+        return middleName;
     }
 
     @Override
@@ -109,13 +83,16 @@ public class FullName implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-            getFirstName(), getMiddleName(), getSurname()
-        );
+        return Objects.hash(getFirstName(), getMiddleName(), getSurname());
     }
 
     @Override
     public String toString() {
-        return getFullName(FullNameFormats.SURNAME_FIRSTNAME_MIDDLENAME);
+        return new StringBuffer("FullName{")
+            .append("surname='").append(surname).append('\'')
+            .append(", firstName='").append(firstName).append('\'')
+            .append(", middleName='").append(middleName).append('\'')
+            .append('}')
+            .toString();
     }
 }

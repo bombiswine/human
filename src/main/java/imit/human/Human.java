@@ -1,68 +1,62 @@
 package imit.human;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import imit.serializators.MyLocalDateDeserializer;
-import imit.serializators.MyLocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Human implements Comparable<Human>, Serializable {
     protected FullName    fullName;
-
-    @JsonSerialize(using = MyLocalDateSerializer.class)
-    @JsonDeserialize(using = MyLocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     protected LocalDate   birthDate;
-
     protected HumanGender gender;
     protected String      nationality;
 
     @JsonCreator
     public Human(
-        final FullName  fullName,
-        final LocalDate birthDate,
-        final String    gender,
-        final String    nationality
+        final @JsonProperty("fullName") FullName fullName,
+        final @JsonProperty("birthDate") LocalDate birthDate,
+        final @JsonProperty("gender") String gender,
+        final @JsonProperty("nationality") String nationality
     ) {
-        if (fullName == null) {
-            throw new IllegalArgumentException(
-                "The null passed into Human's constructor as full name argument"
-            );
-        }
-        if (birthDate == null) {
-            throw new IllegalArgumentException(
-                "The null passed into Human's constructor as birth date argument"
-            );
-        }
-        if (gender == null) {
-            throw new IllegalArgumentException(
-                "The null passed into Human's constructor as human gender argument"
-            );
-        }
-        if (nationality == null || nationality.isEmpty()) {
-            throw new IllegalArgumentException(
-                "The null passed into Human's constructor as nationality argument"
-            );
-        }
+        Objects.requireNonNull(
+            fullName,"The null passed into Human's constructor as full name argument"
+        );
+        Objects.requireNonNull(
+            birthDate, "The null passed into Human's constructor as birth date argument"
+        );
+        Objects.requireNonNull(
+            gender,  "The null passed into Human's constructor as human gender argument"
+        );
+        Objects.requireNonNull(
+            gender,  "The null passed into Human's constructor as human gender argument"
+        );
+        Objects.requireNonNull(
+            nationality,  "The null passed into Human's constructor as nationality argument"
+        );
 
         this.fullName    = fullName;
         this.birthDate   = birthDate;
         this.gender      = HumanGender.getGenderByValue(gender);
-        this.nationality = nationality;
+        this.nationality = Optional.of(nationality)
+                            .filter(s -> !s.isEmpty())
+                            .orElseThrow(() -> new IllegalArgumentException(
+                                "The empty string passed as nationality into Human's constructor"
+                            ));
     }
 
     public Human(final Human person) {
-        if (person == null) {
-            throw new IllegalArgumentException(
-                "The null-ref passed as Human argument into Human's copy constructor"
-            );
-        }
+        Objects.requireNonNull(
+            person, "The null-ref passed as Human argument into Human's copy constructor"
+        );
 
         fullName    = new FullName(person.getFullName());
         birthDate   = person.getBirthDate();
@@ -75,18 +69,22 @@ public class Human implements Comparable<Human>, Serializable {
         return fullName;
     }
 
+    @JsonIgnore
     public String getName() {
         return fullName.getFirstName();
     }
 
+    @JsonIgnore
     public String getMiddleName() {
         return fullName.getMiddleName();
     }
 
+    @JsonIgnore
     public String getSurname() {
         return fullName.getSurname();
     }
 
+    @JsonIgnore
     public String getFullNameAsString() {
         return getFullName().toString();
     }
@@ -123,35 +121,28 @@ public class Human implements Comparable<Human>, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-            getFullName(),
-            getBirthDate(),
-            getGender(),
-            getNationality()
-        );
+        return Objects.hash(getFullName(), getBirthDate(), getGender(), getNationality());
     }
 
     @Override
     public String toString() {
-        final StringBuilder humanInfoFormatString = new StringBuilder();
-        humanInfoFormatString.append("full name: %s\n").
-            append("date of birth: %s\n").
-            append("sex: %s\n").
-            append("nationality: %s\n").
-            append("age: %d\n");
-
-        return String.format(
-            humanInfoFormatString.toString(),
-            fullName, birthDate, gender, nationality, getAge()
-        );
+        return new StringBuffer("Human{")
+            .append("fullName=").append(fullName)
+            .append(", birthDate=").append(birthDate)
+            .append(", gender=").append(gender)
+            .append(", nationality='").append(nationality).append('\'')
+            .append('}')
+            .toString();
     }
 
+    @JsonIgnore
     public int getAge() {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
     static final int ADULT_AGE = 18;
 
+    @JsonIgnore
     public boolean isAdult() {
         return getAge() >= ADULT_AGE;
     }
