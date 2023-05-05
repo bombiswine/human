@@ -1,5 +1,8 @@
 package imit.house;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import imit.human.Human;
 
 import java.io.Serializable;
@@ -13,10 +16,11 @@ public class Flat implements Serializable {
     private final int area;
     private final List<Human> owners;
 
+    @JsonCreator
     public Flat(
-        final int number,
-        final int area,
-        final List<Human> owners
+        final @JsonProperty("number") int number,
+        final @JsonProperty("area")   int area,
+        final @JsonProperty("owners") List<Human> owners
     ) {
 
         this.number = Optional.of(number)
@@ -28,24 +32,28 @@ public class Flat implements Serializable {
             .orElseThrow(() -> new IllegalArgumentException("The area of flat cannot be negative"));
 
         this.owners = Optional.of(owners)
-            .filter(Objects::nonNull)
             .filter(list -> !list.isEmpty())
             .map(list -> list.stream()
                 .filter(Objects::nonNull)
                 .sorted((h1, h2) -> CharSequence.compare(h1.getFullNameAsString(), h2.getFullNameAsString()))
                 .collect(Collectors.toList())
-            ).orElseThrow(() -> new IllegalArgumentException("Error: invalid flat owners list passed into Flat constructor"));
+            ).orElseThrow(() -> new IllegalArgumentException(
+                "Error: invalid flat owners list passed into Flat constructor")
+            );
 
     }
 
+    @JsonGetter("number")
     public int getNumber() {
         return number;
     }
 
+    @JsonGetter("area")
     public int getArea() {
         return area;
     }
 
+    @JsonGetter("owners")
     public List<Human> getOwners() {
         return owners;
     }
@@ -57,7 +65,7 @@ public class Flat implements Serializable {
         owners.addAll(Optional.of(newOwners)
             .map(list -> list.stream()
                 .filter(Objects::nonNull)
-                .sorted((h1, h2) -> CharSequence.compare(h1.getFullNameAsString(), h2.getFullNameAsString()))
+                .sorted((h1, h2) -> CharSequence.compare(h1.getFullName().toString(), h2.getFullName().toString()))
                 .collect(Collectors.toList())
             ).orElseThrow(() -> new IllegalArgumentException("Error: an attempt to replace owners list with null-ref"))
         );
@@ -83,10 +91,11 @@ public class Flat implements Serializable {
 
     @Override
     public String toString() {
-        return "Flat { " +
-            "number = " + number +
-            ", area = " + area +
-            ", owners = " + owners +
-            " }";
+        return new StringBuffer("Flat{")
+            .append("number=").append(number)
+            .append(", area=").append(area)
+            .append(", owners=").append(owners)
+            .append('}')
+            .toString();
     }
 }
