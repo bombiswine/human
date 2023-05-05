@@ -1,60 +1,58 @@
 package imit.house;
 
-import imit.human.Human;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import static imit.TestingData.*;
-import static imit.serializators.HouseSerializationService.deserializeHouse;
-import static imit.serializators.HouseSerializationService.serializeHouse;
 import static org.testng.Assert.assertEquals;
 
-public class HouseSerializationServiceTest {
-    public static final Path SERIALIZAD_OBJECT_FILE_TXT = Path.of("src/test/java/imit/serialized_house.txt");
+public class HouseSerializationTest {
+    public static final Path SERIALIZED_OBJECT_FILE_JSON = Path.of("src/test/java/imit/serialized_house.json");
     @BeforeClass
     public static void setUp() throws IOException {
-        Files.createFile(SERIALIZAD_OBJECT_FILE_TXT);
+        Files.createFile(SERIALIZED_OBJECT_FILE_JSON);
     }
 
     @AfterClass
     public static void tearDown() throws IOException {
-        Files.deleteIfExists(SERIALIZAD_OBJECT_FILE_TXT);
+        Files.deleteIfExists(SERIALIZED_OBJECT_FILE_JSON);
     }
 
-    @Test(dataProvider = "serializeHouse_writesHouseToTxtFile_thenCorrect_data")
-    public static void serializeHouse_writesHouseToTxtFile_thenCorrect_test(
-        final House originalHouse,
-        final Path filename
-    ) throws IOException, ClassNotFoundException {
-        serializeHouse(originalHouse, filename);
-        final House deserializedHouse = deserializeHouse(filename);
-        assertEquals(deserializedHouse, originalHouse);
+    @Test
+    public static void serializeHouse_writesHouseToTxtFile_thenCorrect_test()
+        throws IOException, ClassNotFoundException {
+
+        new ObjectMapper().registerModule(new JavaTimeModule())
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+            .writerWithDefaultPrettyPrinter()
+            .writeValue(SERIALIZED_OBJECT_FILE_JSON.toFile(), SMALL_HOUSE);
+
+        final House deserializedHouse;
+        try (final ObjectInput ois = new ObjectInputStream(
+                new BufferedInputStream(
+                    new FileInputStream(SERIALIZED_OBJECT_FILE_JSON.toFile())))
+        ) {
+            deserializedHouse = (House) ois.readObject();
+        }
+
+        assertEquals(deserializedHouse, SMALL_HOUSE);
     }
 
-    @DataProvider
-    public static Object[][] serializeHouse_writesHouseToTxtFile_thenCorrect_data() {
-        final Human  houseHead = personPierreVeron;
-        final String address = "Clavel's Street, 14";
-        final String cadastralNumber = "45";
+    @Test
+    public static void serializeHouseUsingJacksonDataBind_test() throws JsonProcessingException {
+        final ObjectMapper houseMapper       = new ObjectMapper();
+        final String       jsonHouse         = houseMapper.writerWithDefaultPrettyPrinter().writeValueAsString(SMALL_HOUSE);
+        final House        deserializedHouse = houseMapper.readValue(jsonHouse, House.class);
 
-        final List<Flat> allFlats = List.of(
-            new Flat(1, 50, List.of(personAlexandreMerson)),
-            new Flat(2, 60, List.of(personLucyBrown)),
-            new Flat(3, 50, List.of(personAnnetBeaumarchais)),
-            new Flat(4, 60, List.of(personPierreVeron))
-        );
-
-        final House house = new House(houseHead, address, cadastralNumber, allFlats);
-
-        return new Object[][] {
-            { house, SERIALIZAD_OBJECT_FILE_TXT }
-        };
+        assertEquals(SMALL_HOUSE, deserializedHouse);
     }
 }
