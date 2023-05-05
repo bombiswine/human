@@ -1,10 +1,13 @@
 package imit;
 
+import imit.house.Flat;
+import imit.house.House;
 import imit.human.FullName;
 import imit.human.Human;
 import imit.student.Student;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class TestingData {
     public final static Human personAlexandreMerson = new Human(
@@ -178,5 +181,17 @@ public class TestingData {
         LocalDate.of(2013, 1, 11),
         "Male",
         "French"
+    );
+
+    public final static House smallHouse = new House(
+        personPierreVeron,
+        "Clavel's Street, 14",
+        "45",
+        List.of(
+            new Flat(1, 50, List.of(personAlexandreMerson)),
+            new Flat(2, 60, List.of(personLucyBrown)),
+            new Flat(3, 50, List.of(personAnnetBeaumarchais)),
+            new Flat(4, 60, List.of(personPierreVeron))
+        )
     );
 }
