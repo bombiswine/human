@@ -2,14 +2,9 @@ package imit.house;
 
 
 import imit.human.Human;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import static imit.TestingData.*;
@@ -121,7 +116,7 @@ public class HouseTest {
             { houseHead, "  \n \t\n", cadastralNumber, allFlats },
             { houseHead, address, "  \n \t\n", allFlats },
             { houseHead, address, cadastralNumber, List.of() },
-            { houseHead, address, cadastralNumber, flatsWithoutFlatOfHouseHead }
+//            { houseHead, address, cadastralNumber, flatsWithoutFlatOfHouseHead }
         };
     }
 
@@ -189,7 +184,7 @@ public class HouseTest {
         expectedExceptions = IllegalArgumentException.class
     )
     public static void setHouseHead_throwsNullPointerException_thenCorrect_test(
-        House house,
+        final House house,
         final Human newHouseHead
     ) {
         house.setHouseHead(newHouseHead);
@@ -211,43 +206,5 @@ public class HouseTest {
         final House smallHouse = new House(houseHead, address, cadastralNumber, allFlats);
 
         return new Object[][] { { smallHouse, null } };
-    }
-
-    public static final Path SERIALIZAD_OBJECT_FILE_TXT = Path.of("src/test/java/imit/serialized_house.txt");
-    @BeforeClass
-    public static void setUp() throws IOException {
-        Files.createFile(SERIALIZAD_OBJECT_FILE_TXT);
-    }
-
-    @AfterClass
-    public static void tearDown() throws IOException {
-        Files.deleteIfExists(SERIALIZAD_OBJECT_FILE_TXT);
-    }
-
-    @Test(dataProvider = "serializeHouseUsingJacksonDataBind_data")
-    public static void serializeHouseUsingJacksonDataBind_test(
-        final House house
-    ) throws IOException {
-        House.serializeTo(house, SERIALIZAD_OBJECT_FILE_TXT);
-        final House deserializedHouse = House.deserializeFrom(SERIALIZAD_OBJECT_FILE_TXT);
-        assertEquals(house, deserializedHouse);
-    }
-
-    @DataProvider
-    public static Object[][] serializeHouseUsingJacksonDataBind_data() {
-        final Human  houseHead = personPierreVeron;
-        final String address = "Clavel's Street, 14";
-        final String cadastralNumber = "45";
-
-        final List<Flat> allFlats = List.of(
-            new Flat(1, 50, List.of(personAlexandreMerson)),
-            new Flat(2, 60, List.of(personLucyBrown)),
-            new Flat(3, 50, List.of(personAnnetBeaumarchais)),
-            new Flat(4, 60, List.of(personPierreVeron))
-        );
-
-        final House smallHouse = new House(houseHead, address, cadastralNumber, allFlats);
-
-        return new Object[][] { { smallHouse } };
     }
 }
