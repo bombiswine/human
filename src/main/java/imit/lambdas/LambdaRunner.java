@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class LambdaRunner {
-    public static <T, R> R applyLambda(
+    public static <T, R> R applyFunction(
         final Function<T, R> function,
         final T arg
     ) {
