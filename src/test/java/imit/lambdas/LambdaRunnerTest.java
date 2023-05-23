@@ -71,4 +71,27 @@ public class LambdaRunnerTest {
             },
         };
     }
+
+    @Test(
+        dataProvider = "applyFunction_throwsNullPointerException_thenCorrect_test",
+        expectedExceptions = NullPointerException.class
+    )
+    public static <T, R> void applyFunction_throwsNullPointerException_thenCorrect_test(
+        final Function<T, R> function,
+        final T arg
+    ) {
+       applyFunction(function, arg);
+    }
+
+    @DataProvider
+    public static Object[][] applyFunction_throwsNullPointerException_thenCorrect_test() {
+        return new Object[][] {
+            { GET_STRING_LENGTH, null },
+            { GET_STRING_FIRST_CHARACTER, null },
+            { COUNT_WORDS_SEPARATED_WITH_COMA, null },
+            { GET_AGE, null },
+            { GET_FULLNAME_STRING, null },
+            { MAKE_ONE_YEAR_OLDER, null },
+        };
+    }
 }
