@@ -5,10 +5,11 @@ import imit.student.Student;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
-import static imit.TestingData.personAlexandreMerson;
-import static imit.TestingData.studentAlexandreMerson;
+import static imit.TestingData.*;
 import static imit.lambdas.LambdaDemo.*;
 import static imit.lambdas.LambdaRunner.applyFunction;
 import static org.testng.Assert.assertEquals;
@@ -92,6 +93,92 @@ public class LambdaRunnerTest {
             { GET_AGE, null },
             { GET_FULLNAME_STRING, null },
             { MAKE_ONE_YEAR_OLDER, null },
+        };
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    @Test(dataProvider = "testPredicate_returnsExpectedValue_thenCorrect_data")
+    public static <T> void testPredicate_returnsExpectedValue_thenCorrect_test(
+        final Predicate<T> predicate,
+        final T arg,
+        final boolean expected
+    ) {
+        final boolean actual = predicate.test(arg);
+        assertEquals(actual, expected);
+    }
+
+    @DataProvider
+    public static Object[][] testPredicate_returnsExpectedValue_thenCorrect_data() {
+        return new Object[][] {
+            { NO_WHITE_SPACE_IN_STRING, "NoWhiteSpacesHere", true },
+            { NO_WHITE_SPACE_IN_STRING, "Here's some spaces", false },
+            { NO_WHITE_SPACE_IN_STRING, "", true },
+            { NO_WHITE_SPACE_IN_STRING, " ", false },
+        };
+    }
+
+    @Test(
+        dataProvider = "testPredicate_throwsNullPointerException_thenCorrect_test",
+        expectedExceptions = NullPointerException.class
+    )
+    public static <T> void testPredicate_throwsNullPointerException_thenCorrect_test(
+        final Predicate<T> predicate,
+        final T arg
+    ) {
+        predicate.test(arg);
+    }
+
+    @DataProvider
+    public static Object[][] testPredicate_throwsNullPointerException_thenCorrect_test() {
+        return new Object[][] {
+            { NO_WHITE_SPACE_IN_STRING, null }
+        };
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+    @Test(dataProvider = "biPredicate_returnsExpectedValue_thenCorrect_data")
+    public static <T, U> void biPredicate_returnsExpectedValue_thenCorrect_test(
+        final BiPredicate<T, U> biPredicate,
+        final T argT,
+        final U argU,
+        final boolean expected
+    ) {
+        final boolean actual = biPredicate.test(argT, argU);
+        assertEquals(actual, expected);
+    }
+
+    @DataProvider
+    public static Object[][] biPredicate_returnsExpectedValue_thenCorrect_data() {
+        return new Object[][] {
+            { ARE_NAMESAKES, personAlexandreMerson,  personOlgaMerson,  true },
+            { ARE_NAMESAKES, studentAlexandreMerson, studentOlgaMerson, true },
+            { ARE_NAMESAKES, personAlexandreMerson,  personLukeBrown,   false },
+            { ARE_NAMESAKES, studentAlexandreMerson, personLukeBrown,   false },
+
+//            {
+//                ARE_YOUNGER_MAX_AGE,
+//                new Human[] { personLucyEarl, personLucyEarl, personLucyEarl },
+//                40,
+//                true
+//            },
+        };
+    }
+
+    @Test(dataProvider = "biPredicate_throwsNullPointerException_thenCorrect_data")
+    public static <T, U> void biPredicate_throwsNullPointerException_thenCorrect_test(
+        final BiPredicate<T, U> biPredicate,
+        final T argT,
+        final U argU
+    ) {
+        biPredicate.test(argT, argU);
+    }
+
+    @DataProvider
+    public static Object[][] biPredicate_throwsNullPointerException_thenCorrect_data() {
+        return new Object[][] {
+            { ARE_NAMESAKES, null,  personOlgaMerson },
+            { ARE_NAMESAKES, personAlexandreMerson,  null },
+            { ARE_NAMESAKES, null,  null },
         };
     }
 }

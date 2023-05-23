@@ -34,10 +34,10 @@ public class LambdaDemo {
     final static Predicate<String> NO_WHITE_SPACE_IN_STRING = s -> !s.contains(" ");
 
 
-    final static BiPredicate<? extends Human, ? extends Human> NAMESAKES =
+    final static BiPredicate<? extends Human, ? extends Human> ARE_NAMESAKES =
         (h1, h2) -> Objects.equals(h1.getSurname(), h2.getSurname());
     final static BiPredicate<Human, Integer> YOUNGER_THAN_MAX_AGE = (h, i) -> h.getAge() > i;
 
-    final static BiFunction<Human[], Integer, Boolean> ARE_YOUNGER_MAX_AGE =
+    final static BiPredicate<Human[], Integer> ARE_YOUNGER_MAX_AGE =
         (Human[] humans, Integer age) -> Arrays.stream(humans).allMatch(h -> YOUNGER_THAN_MAX_AGE.test(h, age));
 }
