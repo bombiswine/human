@@ -5,13 +5,17 @@ import imit.student.Student;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 import static imit.TestingData.*;
 import static imit.lambdas.LambdaDemo.*;
-import static imit.lambdas.LambdaRunner.applyFunction;
+import static imit.lambdas.LambdaRunner.*;
+import static imit.lambdas.StreamApiDemo.*;
 import static org.testng.Assert.assertEquals;
 
 public class LambdaRunnerTest {
@@ -103,8 +107,7 @@ public class LambdaRunnerTest {
         final T arg,
         final boolean expected
     ) {
-        final boolean actual = predicate.test(arg);
-        assertEquals(actual, expected);
+        assertEquals(testPredicate(predicate, arg), expected);
     }
 
     @DataProvider
@@ -125,7 +128,7 @@ public class LambdaRunnerTest {
         final Predicate<T> predicate,
         final T arg
     ) {
-        predicate.test(arg);
+        testPredicate(predicate, arg);
     }
 
     @DataProvider
@@ -143,8 +146,7 @@ public class LambdaRunnerTest {
         final U argU,
         final boolean expected
     ) {
-        final boolean actual = biPredicate.test(argT, argU);
-        assertEquals(actual, expected);
+        assertEquals(testBiPredicate(biPredicate, argT, argU), expected);
     }
 
     @DataProvider
@@ -155,22 +157,80 @@ public class LambdaRunnerTest {
             { ARE_NAMESAKES, personAlexandreMerson,  personLukeBrown,   false },
             { ARE_NAMESAKES, studentAlexandreMerson, personLukeBrown,   false },
 
-//            {
-//                ARE_YOUNGER_MAX_AGE,
-//                new Human[] { personLucyEarl, personLucyEarl, personLucyEarl },
-//                40,
-//                true
-//            },
+            {
+                ARE_YOUNGER_MAX_AGE,
+                new Human[] {
+                    personLucyEarl,
+                    personAlexandreMerson
+                },
+                0,
+                false
+            },
+            {
+                ARE_YOUNGER_MAX_AGE,
+                new Human[] {
+                    personLucyEarl,
+                    personAlexandreMerson
+                },
+                121,
+                true
+            },
+            {
+                ARE_YOUNGER_MAX_AGE,
+                new Human[] {
+                    personLucyEarl,
+                    personAlexandreMerson
+                },
+                -121,
+                false
+            },
+            {
+                ARE_YOUNGER_MAX_AGE,
+                new Human[] {
+                    personLucyEarl,
+                    personAlexandreMerson
+                },
+                2,
+                false
+            },
+            {
+                ARE_YOUNGER_MAX_AGE,
+                new Human[] {
+                    personLucyEarl,
+                    personAlexandreMerson
+                },
+                40,
+                true
+            },
+            {
+                ARE_YOUNGER_MAX_AGE,
+                new Human[] {
+                    personLucyEarl,
+                    personAlexandreMerson,
+                    personOlgaMerson
+                },
+                40,
+                false
+            },
+            {
+                ARE_YOUNGER_MAX_AGE,
+                new Human[ 0 ],
+                40,
+                true
+            },
         };
     }
 
-    @Test(dataProvider = "biPredicate_throwsNullPointerException_thenCorrect_data")
+    @Test(
+        dataProvider = "biPredicate_throwsNullPointerException_thenCorrect_data",
+        expectedExceptions = NullPointerException.class
+    )
     public static <T, U> void biPredicate_throwsNullPointerException_thenCorrect_test(
         final BiPredicate<T, U> biPredicate,
         final T argT,
         final U argU
     ) {
-        biPredicate.test(argT, argU);
+        testBiPredicate(biPredicate, argT, argU);
     }
 
     @DataProvider
@@ -179,6 +239,88 @@ public class LambdaRunnerTest {
             { ARE_NAMESAKES, null,  personOlgaMerson },
             { ARE_NAMESAKES, personAlexandreMerson,  null },
             { ARE_NAMESAKES, null,  null },
+        };
+    }
+    /////////////////////////////////////////////////////////////////////////////////////
+    @Test(dataProvider = "applyUnaryOperator_returnsExpectedResult_thenCorrect_data")
+    public static <T> void applyUnaryOperator_returnsExpectedResult_thenCorrect_test(
+        final UnaryOperator<T> unaryOperator,
+        final T arg,
+        final T expected
+    ) {
+        final T actual = applyUnaryOperator(unaryOperator, arg);
+        assertEquals(actual, expected);
+    }
+
+    @DataProvider
+    public static Object[][] applyUnaryOperator_returnsExpectedResult_thenCorrect_data() {
+        return new Object[][] {
+            {
+                REMOVE_ALL_NULLS,
+                Arrays.asList(null, "Im' not null", "null", null ),
+                List.of("Im' not null", "null")
+            },
+            {
+                REMOVE_ALL_NULLS,
+                Arrays.asList(null, null, null ),
+                List.of()
+            },
+            {
+                REMOVE_ALL_NULLS,
+                List.of(12, 25, -4, 2),
+                List.of(12, 25, -4, 2),
+            },
+            {
+                REMOVE_ALL_NULLS,
+                List.of(),
+                List.of(),
+            },
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            {
+                GET_LEX_GRAPH_SORTED_NON_EMPTY_STRINGS,
+                List.of("bae", "pop", "ojojo", "la la"),
+                List.of("bae", "la la", "ojojo", "pop")
+            },
+            {
+                GET_LEX_GRAPH_SORTED_NON_EMPTY_STRINGS,
+                List.of("bae", "Bae" , "b a e"),
+                List.of("Bae", "b a e", "bae")
+            },
+            {
+                GET_LEX_GRAPH_SORTED_NON_EMPTY_STRINGS,
+                List.of("bae", "pop", "ojojo", "la la"),
+                List.of("bae", "la la", "ojojo", "pop")
+            },
+            {
+                GET_LEX_GRAPH_SORTED_NON_EMPTY_STRINGS,
+                List.of("a string"),
+                List.of("a string")
+            },  {
+                GET_LEX_GRAPH_SORTED_NON_EMPTY_STRINGS,
+                List.of(),
+                List.of()
+            },
+//            {
+//                SORT_PEOPLE_BY_GENDER_THEN_BY_AGE,
+//            },
+        };
+    }
+
+    @Test(
+        dataProvider = "applyUnaryOperator_throwsNullPointerException_thenCorrect_test",
+        expectedExceptions = NullPointerException.class
+    )
+    public static <T> void applyUnaryOperator_throwsNullPointerException_thenCorrect_test(
+        final UnaryOperator<T> unaryOperator,
+        final T arg
+    ) {
+        applyFunction(unaryOperator, arg);
+    }
+
+    @DataProvider
+    public static Object[][] applyUnaryOperator_throwsNullPointerException_thenCorrect_test() {
+        return new Object[][] {
+            { , },
         };
     }
 }

@@ -1,10 +1,7 @@
 package imit.lambdas;
 
 import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 public class LambdaRunner {
     public static <T, R> R applyFunction(
@@ -15,6 +12,15 @@ public class LambdaRunner {
         Objects.requireNonNull(arg);
 
         return function.apply(arg);
+    }
+    public static <T> T applyUnaryOperator(
+        final UnaryOperator<T> unaryOperator,
+        final T arg
+    ) {
+        Objects.requireNonNull(unaryOperator);
+        Objects.requireNonNull(arg);
+
+        return unaryOperator.apply(arg);
     }
 
     public static <T, U, R> R applyBiFunction(

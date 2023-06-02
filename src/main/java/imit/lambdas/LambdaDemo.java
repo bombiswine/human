@@ -4,7 +4,6 @@ import imit.human.Human;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -36,7 +35,7 @@ public class LambdaDemo {
 
     final static BiPredicate<? extends Human, ? extends Human> ARE_NAMESAKES =
         (h1, h2) -> Objects.equals(h1.getSurname(), h2.getSurname());
-    final static BiPredicate<Human, Integer> YOUNGER_THAN_MAX_AGE = (h, i) -> h.getAge() > i;
+    final static BiPredicate<Human, Integer> YOUNGER_THAN_MAX_AGE = (h, i) -> h.getAge() < i;
 
     final static BiPredicate<Human[], Integer> ARE_YOUNGER_MAX_AGE =
         (Human[] humans, Integer age) -> Arrays.stream(humans).allMatch(h -> YOUNGER_THAN_MAX_AGE.test(h, age));
