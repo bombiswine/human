@@ -1,10 +1,12 @@
 package imit.lambdas;
 
+import imit.human.FullName;
 import imit.human.Human;
 import imit.student.Student;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -300,9 +302,61 @@ public class LambdaRunnerTest {
                 List.of(),
                 List.of()
             },
-//            {
-//                SORT_PEOPLE_BY_GENDER_THEN_BY_AGE,
-//            },
+            {
+                SORT_PEOPLE_BY_GENDER_THEN_BY_AGE,
+                List.of(
+                    new Human(
+                        new FullName("Alexandre", "", "Merson"),
+                        LocalDate.of(2002, 6, 24),
+                        "Male",
+                        "Russian"
+                    ),
+                    new Human(
+                        new FullName("Ioan", "", "Miczewski"),
+                        LocalDate.of(2000, 1, 10),
+                        "Male",
+                        "Polish"
+                    ),
+                    new Human(
+                        new FullName("Lucy", "", "Earl"),
+                        LocalDate.of(2004, 5, 24),
+                        "Female",
+                        "English"
+                    ),
+                    new Human(
+                        new FullName("Mary", "", "Green"),
+                        LocalDate.of(2000, 7, 14),
+                        "Female",
+                        "English"
+                    )
+                ),
+                List.of(
+                    new Human(
+                        new FullName("Lucy", "", "Earl"),
+                        LocalDate.of(2004, 5, 24),
+                        "Female",
+                        "English"
+                    ),
+                    new Human(
+                        new FullName("Mary", "", "Green"),
+                        LocalDate.of(2000, 7, 14),
+                        "Female",
+                        "English"
+                    ),
+                    new Human(
+                        new FullName("Alexandre", "", "Merson"),
+                        LocalDate.of(2002, 6, 24),
+                        "Male",
+                        "Russian"
+                    ),
+                    new Human(
+                        new FullName("Ioan", "", "Miczewski"),
+                        LocalDate.of(2000, 1, 10),
+                        "Male",
+                        "Polish"
+                    )
+                ),
+            },
         };
     }
 
