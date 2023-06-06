@@ -19,13 +19,15 @@ public class LambdaDemo {
     final static Function<? extends Human, String> GET_FULLNAME_STRING =
         h -> new StringBuilder()
             .append(h.getSurname())
-            .append(h.getMiddleName())
+            .append(" ")
             .append(h.getName())
+            .append(" ")
+            .append(h.getMiddleName())
             .toString();
     final static Function<Human, Human> MAKE_ONE_YEAR_OLDER =
         h -> new Human(
             h.getFullName(),
-            h.getBirthDate().plusYears(1),
+            h.getBirthDate().minusYears(1),
             h.getGender().toString(),
             h.getNationality()
         );

@@ -27,19 +27,18 @@ public class StreamApiDemo extends LambdaDemo {
                 .thenComparingInt(Human::getAge)
             ).toList();
 
+    private static final Predicate<Integer> IS_EVEN =  n -> n % 2 == 0;
+
+    private static final Supplier<Integer> GET_NULL = () -> null;
+
     public static final Function<Set<Integer>, Integer> COUNT_POSITIVE_NUMBERS =
         s -> (int) s.stream()
+            .filter(Objects::nonNull)
             .filter(number -> number > 0)
             .count();
 
     public static final Function<List<Object>, List<Object>> LAST_THREE_ELEMENTS =
-        l -> l.stream()
-            .skip(l.size() - 3)
-            .toList();
-
-    private static final Predicate<Integer> IS_EVEN =  n -> n % 2 == 0;
-
-    private static final Supplier<Integer> GET_NULL = () -> null;
+        l -> (l.size() >= 3) ? l.stream().skip(l.size() - 3).toList() : l;
 
     public static final Function<List<Integer>, Integer> GET_FIRST_EVEN_NUMBER_OR_NULL =
         l -> l.stream()
@@ -49,6 +48,7 @@ public class StreamApiDemo extends LambdaDemo {
 
     public static final Function<Integer[], List<Integer>> GET_SQUARES_LIST =
         ints -> Arrays.stream(ints)
+            .filter(Objects::nonNull)
             .map(n -> n * n)
             .collect(Collectors.toList());
 
